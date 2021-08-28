@@ -1,6 +1,3 @@
-import fetch from "node-fetch";
-
-
 export const setLocationObject = (locationObj, coordsObj) => {
     const { lat, lon, name, unit} = coordsObj;
     locationObj.setLat(lat);
@@ -41,6 +38,7 @@ export const getWeatherFromCoords = async (locationObj) => {
         body: JSON.stringify(urlDataObj)
     });
     const weatherJson = await weatherStream.json();
+    console.log(weatherJson);
     return weatherJson;
     } catch (err) {
         console.error(err);
@@ -63,16 +61,17 @@ export const getCoordsFromApi = async (entryText, units) => {
     const urlDataObj = {
         text: entryText,
         units: units
-    };
-
-    try {
-        const dataStream = await fetch('./.netlify/functions/get_coords',
-        {method: "POST", body: JSON.stringify(urlDataObj)});
+      };
+      try {
+        const dataStream = await fetch("./.netlify/functions/get_coords", {
+          method: "POST",
+          body: JSON.stringify(urlDataObj)
+        });
         const jsonData = await dataStream.json();
         return jsonData;
-    } catch(err) {
-        console.error(err.stack);
-    }
+      } catch (err) {
+        console.error(err);
+      }
 };
 
 export const cleanText = (text) => {
